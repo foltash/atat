@@ -23,7 +23,7 @@ jobs:
           set -euo pipefail
 
           apt-get update
-          apt-get install --no-install-recommends -y bash passwd ca-certificates
+          apt-get install --no-install-recommends -y bash passwd ca-certificates git
 
           # The container already runs as root. Set the requested password.
           printf '%s\n' 'root:root' | chpasswd
