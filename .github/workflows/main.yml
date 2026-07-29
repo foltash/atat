@@ -1,0 +1,57 @@
+name: Debian 11 Commands
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  commands:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:11
+      options: >-
+        --ulimit core=-1
+        --ulimit memlock=-1:-1
+        --ulimit nofile=1048576:1048576
+
+    steps:
+      - name: Initialize Debian as root
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          apt-get update
+          apt-get install --no-install-recommends -y bash passwd ca-certificates
+
+          # The container already runs as root. Set the requested password.
+          printf '%s\n' 'root:root' | chpasswd
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run 8 commands with raised limits
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # Keep these in the same step so the limits apply to all 8 commands.
+          ulimit -c unlimited
+          ulimit -l unlimited
+          ulimit -s unlimited
+          ulimit -n 1048576
+
+          echo "User: $(id -un)"
+          echo "Debian: $(cat /etc/debian_version)"
+          ulimit -a
+
+          # Write your 8 commands below.
+          echo "Command 1"
+          echo "Command 2"
+          echo "Command 3"
+          echo "Command 4"
+          echo "Command 5"
+          echo "Command 6"
+          echo "Command 7"
+          echo "Command 8"
